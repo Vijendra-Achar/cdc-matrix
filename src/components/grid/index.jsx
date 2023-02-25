@@ -8,8 +8,9 @@ const Gird = ({ data }) => {
       let initialMatrix = constructMatrix(parseInt(data?.grid?.length), parseInt(data?.grid?.breadth));
 
       data?.infectedCells?.forEach((value, index) => {
-        if (value?.y && value?.x)
-          initialMatrix[parseInt(value?.y) + initialMatrix?.length - 1][parseInt(value?.x)] = "X";
+        if (value?.y && value?.x) {
+          initialMatrix[initialMatrix?.length - parseInt(value?.y) - 1][parseInt(value?.x)] = "X";
+        }
       });
 
       setMatrix(initialMatrix);
