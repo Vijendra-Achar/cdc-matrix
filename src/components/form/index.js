@@ -4,7 +4,7 @@ import "./styles.scss";
 
 import { Input, Button } from "../ui-components";
 
-const InputForm = () => {
+const InputForm = ({ submit, clearData }) => {
   const initialInfectedCell = { x: "", y: "" };
   const initialInfectedPerson = { x: "", y: "", p: "" };
   const initialGridLayout = { length: "", breadth: "" };
@@ -78,13 +78,15 @@ const InputForm = () => {
       persons: infectedPeople,
     };
 
-    console.log("The final payload -> ", payload);
+    submit(payload);
   };
 
   const handleClear = () => {
     setInfectedCells([initialInfectedCell]);
     setInfectedPeople([initialInfectedPerson]);
     setGridLayout(initialGridLayout);
+
+    clearData();
   };
 
   return (
@@ -94,11 +96,11 @@ const InputForm = () => {
 
         <div className="input-layout">
           <span>
-            Length:
+            Length
             <Input value={gridLayout?.length} onChange={(e) => handleFieldValueChange("length", e)} type="number" />
           </span>
           <span>
-            Breadth :
+            Breadth
             <Input value={gridLayout?.breadth} onChange={(e) => handleFieldValueChange("breadth", e)} type="number" />
           </span>
         </div>
@@ -111,10 +113,10 @@ const InputForm = () => {
           return (
             <div key={index} className="input-layout">
               <span>
-                X: <Input value={cell?.x} onChange={(e) => handleFieldValueChange("cellX", e, index)} type="number" />
+                X <Input value={cell?.x} onChange={(e) => handleFieldValueChange("cellX", e, index)} type="number" />
               </span>
               <span>
-                Y : <Input value={cell?.y} onChange={(e) => handleFieldValueChange("cellY", e, index)} type="number" />
+                Y<Input value={cell?.y} onChange={(e) => handleFieldValueChange("cellY", e, index)} type="number" />
               </span>
             </div>
           );
@@ -130,15 +132,15 @@ const InputForm = () => {
           return (
             <div key={index} className="input-layout">
               <span>
-                X:
+                X
                 <Input value={person?.x} onChange={(e) => handleFieldValueChange("personX", e, index)} type="number" />
               </span>
               <span>
-                Y :
+                Y
                 <Input value={person?.y} onChange={(e) => handleFieldValueChange("personY", e, index)} type="number" />
               </span>
               <span>
-                Facing :
+                Facing
                 <Input value={person?.p} onChange={(e) => handleFieldValueChange("personP", e, index)} type="Text" />
               </span>
             </div>
