@@ -5,9 +5,9 @@ import "./styles.scss";
 import { Input, Button } from "../ui-components";
 
 const InputForm = ({ submit, clearData }) => {
-  const initialInfectedCell = { x: "", y: "" };
-  const initialInfectedPerson = { x: "", y: "", p: "" };
-  const initialGridLayout = { length: "", breadth: "" };
+  const initialInfectedCell = { x: "2", y: "2" };
+  const initialInfectedPerson = { x: "1", y: "1", p: "E", movement: "FLFF" };
+  const initialGridLayout = { length: "5", breadth: "5" };
 
   const [gridLayout, setGridLayout] = useState(initialGridLayout);
 
@@ -59,6 +59,10 @@ const InputForm = ({ submit, clearData }) => {
       case "personP":
         const updatedPPValue = editAndReturnNewArray(infectedPeople, "p", value, index);
         setInfectedPeople(updatedPPValue);
+        break;
+      case "personM":
+        const updatedPMValue = editAndReturnNewArray(infectedPeople, "movement", value, index);
+        setInfectedPeople(updatedPMValue);
         break;
     }
   };
@@ -142,6 +146,14 @@ const InputForm = ({ submit, clearData }) => {
               <span>
                 Facing
                 <Input value={person?.p} onChange={(e) => handleFieldValueChange("personP", e, index)} type="Text" />
+              </span>
+              <span>
+                Movement
+                <Input
+                  value={person?.movement}
+                  onChange={(e) => handleFieldValueChange("personM", e, index)}
+                  type="Text"
+                />
               </span>
             </div>
           );
