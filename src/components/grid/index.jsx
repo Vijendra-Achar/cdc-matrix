@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { traceMovement } from "./movementMap";
 
 const Gird = ({ data }) => {
   const [matrix, setMatrix] = useState(undefined);
 
   useEffect(() => {
     if (data) {
-      let initialMatrix = constructMatrix(parseInt(data?.grid?.length), parseInt(data?.grid?.breadth));
+      const length = data?.grid?.length;
+      const breadth = data?.grid?.breadth;
+      let initialMatrix = constructMatrix(parseInt(length), parseInt(breadth));
 
       // Please the infected Cells first
       data?.infectedCells?.forEach((value) => {
@@ -13,6 +16,8 @@ const Gird = ({ data }) => {
           initialMatrix[initialMatrix?.length - parseInt(value?.y) - 1][parseInt(value?.x)] = "X";
         }
       });
+
+      let finalMatrix = [];
 
       data?.persons?.forEach((value) => {
         // Place the person's initial position
@@ -23,184 +28,12 @@ const Gird = ({ data }) => {
         // Convert the string to array
         const directions = value?.movement?.split("");
 
-        let xValue = value?.x;
-        let yValue = value?.y;
-        let isInfected = false;
-
-        // For the initial position of North
-        if (value?.p?.trim().toLowerCase() === "n") {
-          directions?.forEach((dir) => {
-            if (dir.toLowerCase() === "f") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] = "O";
-              }
-
-              yValue = parseInt(yValue) + 1;
-            } else if (dir.toLowerCase() === "r") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] = "O";
-              }
-
-              xValue = parseInt(xValue) + 1;
-            } else if (dir.toLowerCase() === "l") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] = "O";
-              }
-
-              xValue = parseInt(xValue) - 1;
-            }
-          });
-        }
-
-        // For the initial position of South
-        if (value?.p?.trim().toLowerCase() === "s") {
-          directions?.forEach((dir) => {
-            if (dir.toLowerCase() === "f") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] = "O";
-              }
-
-              yValue = parseInt(yValue) - 1;
-            } else if (dir.toLowerCase() === "r") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] = "O";
-              }
-
-              xValue = parseInt(xValue) - 1;
-            } else if (dir.toLowerCase() === "l") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] = "O";
-              }
-
-              xValue = parseInt(xValue) + 1;
-            }
-          });
-        }
-
-        // For the initial position of West
-        if (value?.p?.trim().toLowerCase() === "w") {
-          directions?.forEach((dir) => {
-            if (dir.toLowerCase() === "r") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] = "O";
-              }
-
-              yValue = parseInt(yValue) + 1;
-            } else if (dir.toLowerCase() === "l") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] = "O";
-              }
-
-              yValue = parseInt(yValue) - 1;
-            } else if (dir.toLowerCase() === "f") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) - 1] = "O";
-              }
-
-              xValue = parseInt(xValue) - 1;
-            }
-          });
-        }
-
-        // For the initial position of East
-        if (value?.p?.trim().toLowerCase() === "e") {
-          directions?.forEach((dir) => {
-            if (dir.toLowerCase() === "r") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 + 1][parseInt(xValue)] = "O";
-              }
-
-              yValue = parseInt(yValue) - 1;
-            } else if (dir.toLowerCase() === "l") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1 - 1][parseInt(xValue)] = "O";
-              }
-
-              yValue = parseInt(yValue) + 1;
-            } else if (dir.toLowerCase() === "f") {
-              if (
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] === "X" ||
-                isInfected
-              ) {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] = "X";
-                isInfected = true;
-              } else {
-                initialMatrix[initialMatrix?.length - parseInt(yValue) - 1][parseInt(xValue) + 1] = "O";
-              }
-
-              xValue = parseInt(xValue) + 1;
-            }
-          });
-        }
+        // Track the movement
+        finalMatrix = traceMovement(value, initialMatrix, directions, length, breadth);
+        console.log("The final -> ", finalMatrix);
       });
 
-      setMatrix(initialMatrix);
+      setMatrix(finalMatrix);
     }
   }, [data]);
 
