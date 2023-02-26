@@ -1,5 +1,4 @@
 export const traceMovement = (value, matrix, directions, length, breadth) => {
-  console.log("The data");
   let initialMatrix = matrix;
 
   let xValue = value?.x;

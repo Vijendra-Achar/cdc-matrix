@@ -5,9 +5,9 @@ import "./styles.scss";
 import { Input, Button } from "../ui-components";
 
 const InputForm = ({ submit, clearData }) => {
-  const initialInfectedCell = { x: "2", y: "2" };
-  const initialInfectedPerson = { x: "1", y: "1", p: "E", movement: "FLFF" };
-  const initialGridLayout = { length: "5", breadth: "5" };
+  const initialInfectedCell = { x: "", y: "" };
+  const initialInfectedPerson = { x: "", y: "", p: "", movement: "" };
+  const initialGridLayout = { length: "", breadth: "" };
 
   const [gridLayout, setGridLayout] = useState(initialGridLayout);
 

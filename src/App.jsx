@@ -15,6 +15,10 @@ function App() {
     setFormValues(undefined);
   };
 
+  useEffect(() => {
+    console.log("The form values", formValues);
+  }, [formValues]);
+
   return (
     <div className="container">
       <div>
@@ -22,7 +26,7 @@ function App() {
 
         <InputForm submit={formData} clearData={clearData} />
 
-        <Gird data={formValues} />
+        {formValues && <Gird data={formValues} />}
       </div>
     </div>
   );
