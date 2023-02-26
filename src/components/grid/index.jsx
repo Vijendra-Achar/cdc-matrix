@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { traceMovement } from "./movementMap";
 
+import "./styles.scss";
+
 const Gird = ({ data }) => {
   const [matrix, setMatrix] = useState(undefined);
 
@@ -12,7 +14,7 @@ const Gird = ({ data }) => {
 
       // Please the infected Cells first
       data?.infectedCells?.forEach((value) => {
-        if (value?.y && value?.x) {
+        if (value?.y && value?.x && value?.y < length && value?.x < breadth) {
           initialMatrix[initialMatrix?.length - parseInt(value?.y) - 1][parseInt(value?.x)] = "X";
         }
       });
@@ -21,7 +23,7 @@ const Gird = ({ data }) => {
 
       data?.persons?.forEach((value) => {
         // Place the person's initial position
-        if (value?.y && value?.x) {
+        if (value?.y && value?.x && value?.y < length && value?.x < breadth) {
           initialMatrix[initialMatrix?.length - parseInt(value?.y) - 1][parseInt(value?.x)] = "P";
         }
 
@@ -30,7 +32,6 @@ const Gird = ({ data }) => {
 
         // Track the movement
         finalMatrix = traceMovement(value, initialMatrix, directions, length, breadth);
-        console.log("The final -> ", finalMatrix);
       });
 
       setMatrix(finalMatrix);
@@ -48,7 +49,30 @@ const Gird = ({ data }) => {
     return newMatrix;
   };
 
-  return <div>Gird</div>;
+  return (
+    <div>
+      <h3>The Result</h3>
+      {matrix?.length
+        ? matrix?.map((row, i) => {
+            return (
+              <div
+                style={{ display: "grid", gridTemplateColumns: `repeat(${data?.grid?.length}, 1fr)`, gap: "10px" }}
+                className="matrix"
+                key={i}
+              >
+                {row?.map((element, j) => {
+                  return (
+                    <span className="element" key={j}>
+                      {element}
+                    </span>
+                  );
+                })}
+              </div>
+            );
+          })
+        : ""}
+    </div>
+  );
 };
 
 export default Gird;
