@@ -4,3 +4,35 @@
     margin: 0 10px 0 0;
   }
 }
+
+.section {
+  display: flex;
+  justify-content: center;
+
+  &.person {
+    flex-direction: column;
+  }
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+.form-container {
+  width: 75vw;
+  margin: 25px auto;
+}
+
+.input-group {
+  margin: 10px;
+}
+
+.input-layout {
+  display: flex;
+}
+
+// .infected-cell {
+// }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./App.scss";
 
+import { Navigation } from "./components/ui-components";
+
 import InputForm from "./components/form";
 import Gird from "./components/grid";
 
@@ -22,7 +24,7 @@ function App() {
   return (
     <div className="container">
       <div>
-        <h3>Center for Disease Control</h3>
+        <Navigation heading="Center for disease control" />
 
         <InputForm submit={formData} clearData={clearData} />
 

@@ -2,7 +2,16 @@ import React, { useState } from "react";
 
 import "./styles.scss";
 
-import { Input, Button } from "../ui-components";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  InputLeftAddon,
+  InputGroup,
+  Button,
+} from "@chakra-ui/react";
 
 const InputForm = ({ submit, clearData }) => {
   const initialInfectedCell = { x: "", y: "" };
@@ -94,77 +103,197 @@ const InputForm = ({ submit, clearData }) => {
   };
 
   return (
-    <div className="input">
-      <div className="grid">
-        <h4>The Grid layout</h4>
-
-        <div className="input-layout">
-          <span>
-            Length
-            <Input value={gridLayout?.length} onChange={(e) => handleFieldValueChange("length", e)} type="number" />
-          </span>
-          <span>
-            Breadth
-            <Input value={gridLayout?.breadth} onChange={(e) => handleFieldValueChange("breadth", e)} type="number" />
-          </span>
-        </div>
-      </div>
-
-      <div>
-        <h4>Infected cells</h4>
-
-        {infectedCells?.map((cell, index) => {
-          return (
-            <div key={index} className="input-layout">
-              <span>
-                X <Input value={cell?.x} onChange={(e) => handleFieldValueChange("cellX", e, index)} type="number" />
-              </span>
-              <span>
-                Y<Input value={cell?.y} onChange={(e) => handleFieldValueChange("cellY", e, index)} type="number" />
-              </span>
-            </div>
-          );
-        })}
-
-        <Button onClick={() => addNewField("cell")} label="Add new cell" />
-      </div>
-
-      <div>
-        <h4>Person's position and movement</h4>
-
-        {infectedPeople.map((person, index) => {
-          return (
-            <div key={index} className="input-layout">
-              <span>
-                X
-                <Input value={person?.x} onChange={(e) => handleFieldValueChange("personX", e, index)} type="number" />
-              </span>
-              <span>
-                Y
-                <Input value={person?.y} onChange={(e) => handleFieldValueChange("personY", e, index)} type="number" />
-              </span>
-              <span>
-                Facing
-                <Input value={person?.p} onChange={(e) => handleFieldValueChange("personP", e, index)} type="Text" />
-              </span>
-              <span>
-                Movement
+    <div className="form-container">
+      <FormControl>
+        <div className="form-layout">
+          {/* The Grid section */}
+          <div>
+            <FormLabel>The Grid layout</FormLabel>
+            <div className="section">
+              <InputGroup className="input-group">
+                <InputLeftAddon children="X" />
                 <Input
-                  value={person?.movement}
-                  onChange={(e) => handleFieldValueChange("personM", e, index)}
-                  type="Text"
+                  type="number"
+                  width="60px"
+                  value={gridLayout?.length}
+                  onChange={(e) => handleFieldValueChange("length", e)}
                 />
-              </span>
+              </InputGroup>
+
+              <InputGroup className="input-group">
+                <InputLeftAddon children="Y" />
+                <Input
+                  type="number"
+                  width="60px"
+                  value={gridLayout?.length}
+                  onChange={(e) => handleFieldValueChange("breadth", e)}
+                />
+              </InputGroup>
             </div>
-          );
-        })}
+          </div>
 
-        <Button onClick={() => addNewField("person")} label="Add another person" />
-      </div>
+          {/* The infected cells section */}
+          <div>
+            <FormLabel>Infected Cells</FormLabel>
 
-      <Button onClick={handleSubmit} label="Submit" />
-      <Button onClick={handleClear} label="Clear" />
+            <div className="infected-cell">
+              {infectedCells?.map((cell, index) => {
+                return (
+                  <div key={index} className="section">
+                    <InputGroup className="input-group">
+                      <InputLeftAddon children="X" />
+                      <Input
+                        type="number"
+                        width="60px"
+                        value={cell?.x}
+                        onChange={(e) => handleFieldValueChange("cellX", e)}
+                      />
+                    </InputGroup>
+
+                    <InputGroup className="input-group">
+                      <InputLeftAddon children="Y" />
+                      <Input
+                        type="number"
+                        width="60px"
+                        value={cell?.y}
+                        onChange={(e) => handleFieldValueChange("cellY", e)}
+                      />
+                    </InputGroup>
+                  </div>
+                );
+              })}
+
+              <Button onClick={() => addNewField("cell")}>Add new cell</Button>
+            </div>
+          </div>
+
+          {/* The person's section */}
+          <div>
+            <FormLabel>Person's position and movement</FormLabel>
+
+            <div className="section person">
+              {infectedPeople.map((person, index) => {
+                return (
+                  <div className="person-container" key={index}>
+                    <div className="input-layout">
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="X" />
+                        <Input
+                          type="number"
+                          width="60px"
+                          value={person?.y}
+                          onChange={(e) => handleFieldValueChange("personX", e)}
+                        />
+                      </InputGroup>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="Y" />
+                        <Input
+                          type="number"
+                          width="60px"
+                          value={person?.y}
+                          onChange={(e) => handleFieldValueChange("personY", e)}
+                        />
+                      </InputGroup>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="Facing" />
+                        <Input
+                          type="number"
+                          width="60px"
+                          value={person?.p}
+                          onChange={(e) => handleFieldValueChange("PersonP", e)}
+                        />
+                      </InputGroup>
+                    </div>
+
+                    <InputGroup className="input-group">
+                      <InputLeftAddon children="Movement" />
+                      <Input
+                        type="number"
+                        width="280px"
+                        value={person?.movement}
+                        onChange={(e) => handleFieldValueChange("PersonM", e)}
+                      />
+                    </InputGroup>
+                  </div>
+                );
+              })}
+            </div>
+            <Button onClick={() => addNewField("person")}>Add new person</Button>
+          </div>
+        </div>
+      </FormControl>
     </div>
+    // <div className="input">
+    //   <div className="grid">
+    //     <h4>The Grid layout</h4>
+
+    //     <div className="input-layout">
+    //       <span>
+    //         Length
+    //         <Input value={gridLayout?.length} onChange={(e) => handleFieldValueChange("length", e)} type="number" />
+    //       </span>
+    //       <span>
+    //         Breadth
+    //         <Input value={gridLayout?.breadth} onChange={(e) => handleFieldValueChange("breadth", e)} type="number" />
+    //       </span>
+    //     </div>
+    //   </div>
+
+    //   <div>
+    //     <h4>Infected cells</h4>
+
+    //     {infectedCells?.map((cell, index) => {
+    //       return (
+    //         <div key={index} className="input-layout">
+    //           <span>
+    //             X <Input value={cell?.x} onChange={(e) => handleFieldValueChange("cellX", e, index)} type="number" />
+    //           </span>
+    //           <span>
+    //             Y<Input value={cell?.y} onChange={(e) => handleFieldValueChange("cellY", e, index)} type="number" />
+    //           </span>
+    //         </div>
+    //       );
+    //     })}
+
+    //     <Button onClick={() => addNewField("cell")} label="Add new cell" />
+    //   </div>
+
+    //   <div>
+    //     <h4>Person's position and movement</h4>
+
+    //     {infectedPeople.map((person, index) => {
+    //       return (
+    //         <div key={index} className="input-layout">
+    //           <span>
+    //             X
+    //             <Input value={person?.x} onChange={(e) => handleFieldValueChange("personX", e, index)} type="number" />
+    //           </span>
+    //           <span>
+    //             Y
+    //             <Input value={person?.y} onChange={(e) => handleFieldValueChange("personY", e, index)} type="number" />
+    //           </span>
+    //           <span>
+    //             Facing
+    //             <Input value={person?.p} onChange={(e) => handleFieldValueChange("personP", e, index)} type="Text" />
+    //           </span>
+    //           <span>
+    //             Movement
+    //             <Input
+    //               value={person?.movement}
+    //               onChange={(e) => handleFieldValueChange("personM", e, index)}
+    //               type="Text"
+    //             />
+    //           </span>
+    //         </div>
+    //       );
+    //     })}
+
+    //     <Button onClick={() => addNewField("person")} label="Add another person" />
+    //   </div>
+
+    //   <Button onClick={handleSubmit} label="Submit" />
+    //   <Button onClick={handleClear} label="Clear" />
+    // </div>
   );
 };
 
