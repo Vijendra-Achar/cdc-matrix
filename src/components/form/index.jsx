@@ -2,7 +2,16 @@ import React, { useState } from "react";
 
 import "./styles.scss";
 
-import { Input, Button } from "../ui-components";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  InputLeftAddon,
+  InputGroup,
+  Button,
+} from "@chakra-ui/react";
 
 const InputForm = ({ submit, clearData }) => {
   const initialInfectedCell = { x: "", y: "" };
@@ -13,6 +22,8 @@ const InputForm = ({ submit, clearData }) => {
 
   const [infectedCells, setInfectedCells] = useState([initialInfectedCell]);
   const [infectedPeople, setInfectedPeople] = useState([initialInfectedPerson]);
+
+  const [isError, setIsError] = useState(false);
 
   const addNewField = (type) => {
     if (type === "cell") {
@@ -76,6 +87,12 @@ const InputForm = ({ submit, clearData }) => {
   };
 
   const handleSubmit = () => {
+    if (checkIfFieldInValid()) {
+      return setIsError(true);
+    }
+
+    setIsError(false);
+
     const payload = {
       grid: gridLayout,
       infectedCells: infectedCells,
@@ -85,85 +102,200 @@ const InputForm = ({ submit, clearData }) => {
     submit(payload);
   };
 
+  const checkIfFieldInValid = () => {
+    let error = false;
+
+    if (!gridLayout?.length || !gridLayout?.breadth) {
+      error = true;
+    }
+
+    infectedCells?.forEach((cell) => {
+      if (!cell?.x || !cell?.y) {
+        error = true;
+        return;
+      }
+    });
+
+    infectedPeople?.forEach((person) => {
+      if (!person?.x || !person?.y || !person?.p || !person?.movement) {
+        error = true;
+        return;
+      }
+    });
+
+    return error;
+  };
+
   const handleClear = () => {
     setInfectedCells([initialInfectedCell]);
     setInfectedPeople([initialInfectedPerson]);
     setGridLayout(initialGridLayout);
+    setIsError(false);
 
     clearData();
   };
 
   return (
-    <div className="input">
-      <div className="grid">
-        <h4>The Grid layout</h4>
+    <div className="form-container">
+      <FormControl>
+        <div className="form-layout">
+          {/* The Grid section */}
+          <div>
+            <FormLabel data-testid="heading">The Grid layout</FormLabel>
+            <div className="section">
+              <FormControl isInvalid={isError && !gridLayout?.length}>
+                <InputGroup className="input-group">
+                  <InputLeftAddon children="X" />
+                  <Input
+                    type="number"
+                    width="60px"
+                    value={gridLayout?.length}
+                    onChange={(e) => handleFieldValueChange("length", e)}
+                  />
+                </InputGroup>
+                <FormErrorMessage>{isError && !gridLayout?.length && "Length is required"}</FormErrorMessage>
+              </FormControl>
 
-        <div className="input-layout">
-          <span>
-            Length
-            <Input value={gridLayout?.length} onChange={(e) => handleFieldValueChange("length", e)} type="number" />
-          </span>
-          <span>
-            Breadth
-            <Input value={gridLayout?.breadth} onChange={(e) => handleFieldValueChange("breadth", e)} type="number" />
-          </span>
+              <FormControl isInvalid={isError && !gridLayout?.breadth}>
+                <InputGroup className="input-group">
+                  <InputLeftAddon children="Y" />
+                  <Input
+                    type="number"
+                    width="60px"
+                    value={gridLayout?.breadth}
+                    onChange={(e) => handleFieldValueChange("breadth", e)}
+                  />
+                </InputGroup>
+                <FormErrorMessage>{isError && !gridLayout?.breadth && "Breadth is required"}</FormErrorMessage>
+              </FormControl>
+            </div>
+          </div>
+
+          {/* The infected cells section */}
+          <div>
+            <FormLabel>Infected Cells</FormLabel>
+
+            <div className="infected-cell">
+              {infectedCells?.map((cell, index) => {
+                return (
+                  <div key={index} data-testid={`infected-cell-${index + 1}`} className="section">
+                    <FormControl isInvalid={isError && !infectedCells[index]?.x}>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="X" />
+                        <Input
+                          type="number"
+                          width="60px"
+                          value={cell?.x}
+                          onChange={(e) => handleFieldValueChange("cellX", e, index)}
+                        />
+                      </InputGroup>
+                      <FormErrorMessage>{isError && !infectedCells[index]?.x && "X is required"}</FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={isError && !infectedCells[index]?.y}>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="Y" />
+                        <Input
+                          type="number"
+                          width="60px"
+                          value={cell?.y}
+                          onChange={(e) => handleFieldValueChange("cellY", e, index)}
+                        />
+                      </InputGroup>
+                      <FormErrorMessage>{isError && !infectedCells[index]?.y && "Y is required"}</FormErrorMessage>
+                    </FormControl>
+                  </div>
+                );
+              })}
+
+              <Button className="action-button" onClick={() => addNewField("cell")}>
+                Add new cell
+              </Button>
+            </div>
+          </div>
+
+          {/* The person's section */}
+          <div>
+            <FormLabel>Person's position and movement</FormLabel>
+
+            <div className="section person">
+              {infectedPeople.map((person, index) => {
+                return (
+                  <div className="person-container" data-testid={`person-${index + 1}`} key={index}>
+                    <div className="input-layout">
+                      <FormControl isInvalid={isError && !infectedPeople[index]?.x}>
+                        <InputGroup className="input-group">
+                          <InputLeftAddon children="X" />
+                          <Input
+                            type="number"
+                            width="60px"
+                            value={person?.x}
+                            onChange={(e) => handleFieldValueChange("personX", e, index)}
+                          />
+                        </InputGroup>
+                        <FormErrorMessage>{isError && !infectedPeople[index]?.x && "X is required"}</FormErrorMessage>
+                      </FormControl>
+
+                      <FormControl isInvalid={isError && !infectedPeople[index]?.y}>
+                        <InputGroup className="input-group">
+                          <InputLeftAddon children="Y" />
+                          <Input
+                            type="number"
+                            width="60px"
+                            value={person?.y}
+                            onChange={(e) => handleFieldValueChange("personY", e, index)}
+                          />
+                        </InputGroup>
+                        <FormErrorMessage>{isError && !infectedPeople[index]?.y && "Y is required"}</FormErrorMessage>
+                      </FormControl>
+
+                      <FormControl isInvalid={isError && !infectedPeople[index]?.p}>
+                        <InputGroup className="input-group">
+                          <InputLeftAddon children="Facing" />
+                          <Input
+                            type="text"
+                            width="60px"
+                            value={person?.p}
+                            onChange={(e) => handleFieldValueChange("personP", e, index)}
+                          />
+                        </InputGroup>
+                        <FormErrorMessage>
+                          {isError && !infectedPeople[index]?.p && "Position is required"}
+                        </FormErrorMessage>
+                      </FormControl>
+                    </div>
+
+                    <FormControl isInvalid={isError && !infectedPeople[index]?.movement}>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="Movement" />
+                        <Input
+                          type="text"
+                          width="280px"
+                          value={person?.movement}
+                          onChange={(e) => handleFieldValueChange("personM", e, index)}
+                        />
+                      </InputGroup>
+                      <FormErrorMessage>
+                        {isError && !infectedPeople[index]?.movement && "Path is required"}
+                      </FormErrorMessage>
+                    </FormControl>
+                  </div>
+                );
+              })}
+            </div>
+            <Button className="action-button" onClick={() => addNewField("person")}>
+              Add new person
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h4>Infected cells</h4>
-
-        {infectedCells?.map((cell, index) => {
-          return (
-            <div key={index} className="input-layout">
-              <span>
-                X <Input value={cell?.x} onChange={(e) => handleFieldValueChange("cellX", e, index)} type="number" />
-              </span>
-              <span>
-                Y<Input value={cell?.y} onChange={(e) => handleFieldValueChange("cellY", e, index)} type="number" />
-              </span>
-            </div>
-          );
-        })}
-
-        <Button onClick={() => addNewField("cell")} label="Add new cell" />
-      </div>
-
-      <div>
-        <h4>Person's position and movement</h4>
-
-        {infectedPeople.map((person, index) => {
-          return (
-            <div key={index} className="input-layout">
-              <span>
-                X
-                <Input value={person?.x} onChange={(e) => handleFieldValueChange("personX", e, index)} type="number" />
-              </span>
-              <span>
-                Y
-                <Input value={person?.y} onChange={(e) => handleFieldValueChange("personY", e, index)} type="number" />
-              </span>
-              <span>
-                Facing
-                <Input value={person?.p} onChange={(e) => handleFieldValueChange("personP", e, index)} type="Text" />
-              </span>
-              <span>
-                Movement
-                <Input
-                  value={person?.movement}
-                  onChange={(e) => handleFieldValueChange("personM", e, index)}
-                  type="Text"
-                />
-              </span>
-            </div>
-          );
-        })}
-
-        <Button onClick={() => addNewField("person")} label="Add another person" />
-      </div>
-
-      <Button onClick={handleSubmit} label="Submit" />
-      <Button onClick={handleClear} label="Clear" />
+        <div className="button-group">
+          <Button onClick={() => handleSubmit()}>Submit</Button>
+          <Button onClick={() => handleClear()} variant="outline">
+            Clear
+          </Button>
+        </div>
+      </FormControl>
     </div>
   );
 };

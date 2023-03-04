@@ -4,3 +4,44 @@
     margin: 0 10px 0 0;
   }
 }
+
+.section {
+  display: flex;
+  justify-content: center;
+
+  &.person {
+    flex-direction: column;
+  }
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+.form-container {
+  width: 75vw;
+  margin: 25px auto;
+}
+
+.input-group {
+  margin: 10px 10px 10px 0;
+}
+
+.input-layout {
+  display: flex;
+}
+
+.button-group {
+  margin: 25px;
+
+  button {
+    margin: 0 15px;
+  }
+}
+
+.action-button {
+  margin: 25px 0;
+}

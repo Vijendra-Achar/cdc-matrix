@@ -1,0 +1,14 @@
+.header {
+  text-align: left;
+  width: 100vw;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: var(--blue-color);
+  color: var(--white-color);
+
+  h2 {
+    font-size: 22px;
+    margin-left: 12.5vw;
+  }
+}
