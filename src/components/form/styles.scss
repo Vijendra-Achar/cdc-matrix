@@ -27,7 +27,7 @@
 }
 
 .input-group {
-  margin: 10px;
+  margin: 10px 10px 10px 0;
 }
 
 .input-layout {
@@ -40,4 +40,8 @@
   button {
     margin: 0 15px;
   }
+}
+
+.action-button {
+  margin: 25px 0;
 }

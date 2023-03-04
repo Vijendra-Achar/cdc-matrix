@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.scss";
 
 import { Navigation } from "./components/ui-components";
@@ -16,10 +16,6 @@ function App() {
   const clearData = () => {
     setFormValues(undefined);
   };
-
-  useEffect(() => {
-    console.log("The form values", formValues);
-  }, [formValues]);
 
   return (
     <div className="container">

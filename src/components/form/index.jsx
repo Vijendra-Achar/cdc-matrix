@@ -23,6 +23,8 @@ const InputForm = ({ submit, clearData }) => {
   const [infectedCells, setInfectedCells] = useState([initialInfectedCell]);
   const [infectedPeople, setInfectedPeople] = useState([initialInfectedPerson]);
 
+  const [isError, setIsError] = useState(false);
+
   const addNewField = (type) => {
     if (type === "cell") {
       setInfectedCells((prevState) => {
@@ -85,6 +87,12 @@ const InputForm = ({ submit, clearData }) => {
   };
 
   const handleSubmit = () => {
+    if (checkIfFieldInValid()) {
+      return setIsError(true);
+    }
+
+    setIsError(false);
+
     const payload = {
       grid: gridLayout,
       infectedCells: infectedCells,
@@ -94,10 +102,35 @@ const InputForm = ({ submit, clearData }) => {
     submit(payload);
   };
 
+  const checkIfFieldInValid = () => {
+    let error = false;
+
+    if (!gridLayout?.length || !gridLayout?.breadth) {
+      error = true;
+    }
+
+    infectedCells?.forEach((cell) => {
+      if (!cell?.x || !cell?.y) {
+        error = true;
+        return;
+      }
+    });
+
+    infectedPeople?.forEach((person) => {
+      if (!person?.x || !person?.y || !person?.p || !person?.movement) {
+        error = true;
+        return;
+      }
+    });
+
+    return error;
+  };
+
   const handleClear = () => {
     setInfectedCells([initialInfectedCell]);
     setInfectedPeople([initialInfectedPerson]);
     setGridLayout(initialGridLayout);
+    setIsError(false);
 
     clearData();
   };
@@ -110,7 +143,7 @@ const InputForm = ({ submit, clearData }) => {
           <div>
             <FormLabel data-testid="heading">The Grid layout</FormLabel>
             <div className="section">
-              <FormControl>
+              <FormControl isInvalid={isError && !gridLayout?.length}>
                 <InputGroup className="input-group">
                   <InputLeftAddon children="X" />
                   <Input
@@ -120,9 +153,10 @@ const InputForm = ({ submit, clearData }) => {
                     onChange={(e) => handleFieldValueChange("length", e)}
                   />
                 </InputGroup>
+                <FormErrorMessage>{isError && !gridLayout?.length && "Length is required"}</FormErrorMessage>
               </FormControl>
 
-              <FormControl>
+              <FormControl isInvalid={isError && !gridLayout?.breadth}>
                 <InputGroup className="input-group">
                   <InputLeftAddon children="Y" />
                   <Input
@@ -132,6 +166,7 @@ const InputForm = ({ submit, clearData }) => {
                     onChange={(e) => handleFieldValueChange("breadth", e)}
                   />
                 </InputGroup>
+                <FormErrorMessage>{isError && !gridLayout?.breadth && "Breadth is required"}</FormErrorMessage>
               </FormControl>
             </div>
           </div>
@@ -144,7 +179,7 @@ const InputForm = ({ submit, clearData }) => {
               {infectedCells?.map((cell, index) => {
                 return (
                   <div key={index} data-testid={`infected-cell-${index + 1}`} className="section">
-                    <FormControl>
+                    <FormControl isInvalid={isError && !infectedCells[index]?.x}>
                       <InputGroup className="input-group">
                         <InputLeftAddon children="X" />
                         <Input
@@ -154,9 +189,10 @@ const InputForm = ({ submit, clearData }) => {
                           onChange={(e) => handleFieldValueChange("cellX", e, index)}
                         />
                       </InputGroup>
+                      <FormErrorMessage>{isError && !infectedCells[index]?.x && "X is required"}</FormErrorMessage>
                     </FormControl>
 
-                    <FormControl>
+                    <FormControl isInvalid={isError && !infectedCells[index]?.y}>
                       <InputGroup className="input-group">
                         <InputLeftAddon children="Y" />
                         <Input
@@ -166,12 +202,15 @@ const InputForm = ({ submit, clearData }) => {
                           onChange={(e) => handleFieldValueChange("cellY", e, index)}
                         />
                       </InputGroup>
+                      <FormErrorMessage>{isError && !infectedCells[index]?.y && "Y is required"}</FormErrorMessage>
                     </FormControl>
                   </div>
                 );
               })}
 
-              <Button onClick={() => addNewField("cell")}>Add new cell</Button>
+              <Button className="action-button" onClick={() => addNewField("cell")}>
+                Add new cell
+              </Button>
             </div>
           </div>
 
@@ -184,7 +223,7 @@ const InputForm = ({ submit, clearData }) => {
                 return (
                   <div className="person-container" data-testid={`person-${index + 1}`} key={index}>
                     <div className="input-layout">
-                      <FormControl>
+                      <FormControl isInvalid={isError && !infectedPeople[index]?.x}>
                         <InputGroup className="input-group">
                           <InputLeftAddon children="X" />
                           <Input
@@ -194,9 +233,10 @@ const InputForm = ({ submit, clearData }) => {
                             onChange={(e) => handleFieldValueChange("personX", e, index)}
                           />
                         </InputGroup>
+                        <FormErrorMessage>{isError && !infectedPeople[index]?.x && "X is required"}</FormErrorMessage>
                       </FormControl>
 
-                      <FormControl>
+                      <FormControl isInvalid={isError && !infectedPeople[index]?.y}>
                         <InputGroup className="input-group">
                           <InputLeftAddon children="Y" />
                           <Input
@@ -206,9 +246,10 @@ const InputForm = ({ submit, clearData }) => {
                             onChange={(e) => handleFieldValueChange("personY", e, index)}
                           />
                         </InputGroup>
+                        <FormErrorMessage>{isError && !infectedPeople[index]?.y && "Y is required"}</FormErrorMessage>
                       </FormControl>
 
-                      <FormControl>
+                      <FormControl isInvalid={isError && !infectedPeople[index]?.p}>
                         <InputGroup className="input-group">
                           <InputLeftAddon children="Facing" />
                           <Input
@@ -218,10 +259,13 @@ const InputForm = ({ submit, clearData }) => {
                             onChange={(e) => handleFieldValueChange("personP", e, index)}
                           />
                         </InputGroup>
+                        <FormErrorMessage>
+                          {isError && !infectedPeople[index]?.p && "Position is required"}
+                        </FormErrorMessage>
                       </FormControl>
                     </div>
 
-                    <FormControl>
+                    <FormControl isInvalid={isError && !infectedPeople[index]?.movement}>
                       <InputGroup className="input-group">
                         <InputLeftAddon children="Movement" />
                         <Input
@@ -231,12 +275,17 @@ const InputForm = ({ submit, clearData }) => {
                           onChange={(e) => handleFieldValueChange("personM", e, index)}
                         />
                       </InputGroup>
+                      <FormErrorMessage>
+                        {isError && !infectedPeople[index]?.movement && "Path is required"}
+                      </FormErrorMessage>
                     </FormControl>
                   </div>
                 );
               })}
             </div>
-            <Button onClick={() => addNewField("person")}>Add new person</Button>
+            <Button className="action-button" onClick={() => addNewField("person")}>
+              Add new person
+            </Button>
           </div>
         </div>
 
