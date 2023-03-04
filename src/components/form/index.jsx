@@ -108,7 +108,7 @@ const InputForm = ({ submit, clearData }) => {
         <div className="form-layout">
           {/* The Grid section */}
           <div>
-            <FormLabel>The Grid layout</FormLabel>
+            <FormLabel data-testid="heading">The Grid layout</FormLabel>
             <div className="section">
               <InputGroup className="input-group">
                 <InputLeftAddon children="X" />
@@ -139,7 +139,7 @@ const InputForm = ({ submit, clearData }) => {
             <div className="infected-cell">
               {infectedCells?.map((cell, index) => {
                 return (
-                  <div key={index} className="section">
+                  <div key={index} data-testid={`infected-cell-${index + 1}`} className="section">
                     <InputGroup className="input-group">
                       <InputLeftAddon children="X" />
                       <Input
@@ -174,7 +174,7 @@ const InputForm = ({ submit, clearData }) => {
             <div className="section person">
               {infectedPeople.map((person, index) => {
                 return (
-                  <div className="person-container" key={index}>
+                  <div className="person-container" data-testid={`person-${index + 1}`} key={index}>
                     <div className="input-layout">
                       <InputGroup className="input-group">
                         <InputLeftAddon children="X" />
@@ -223,77 +223,6 @@ const InputForm = ({ submit, clearData }) => {
         </div>
       </FormControl>
     </div>
-    // <div className="input">
-    //   <div className="grid">
-    //     <h4>The Grid layout</h4>
-
-    //     <div className="input-layout">
-    //       <span>
-    //         Length
-    //         <Input value={gridLayout?.length} onChange={(e) => handleFieldValueChange("length", e)} type="number" />
-    //       </span>
-    //       <span>
-    //         Breadth
-    //         <Input value={gridLayout?.breadth} onChange={(e) => handleFieldValueChange("breadth", e)} type="number" />
-    //       </span>
-    //     </div>
-    //   </div>
-
-    //   <div>
-    //     <h4>Infected cells</h4>
-
-    //     {infectedCells?.map((cell, index) => {
-    //       return (
-    //         <div key={index} className="input-layout">
-    //           <span>
-    //             X <Input value={cell?.x} onChange={(e) => handleFieldValueChange("cellX", e, index)} type="number" />
-    //           </span>
-    //           <span>
-    //             Y<Input value={cell?.y} onChange={(e) => handleFieldValueChange("cellY", e, index)} type="number" />
-    //           </span>
-    //         </div>
-    //       );
-    //     })}
-
-    //     <Button onClick={() => addNewField("cell")} label="Add new cell" />
-    //   </div>
-
-    //   <div>
-    //     <h4>Person's position and movement</h4>
-
-    //     {infectedPeople.map((person, index) => {
-    //       return (
-    //         <div key={index} className="input-layout">
-    //           <span>
-    //             X
-    //             <Input value={person?.x} onChange={(e) => handleFieldValueChange("personX", e, index)} type="number" />
-    //           </span>
-    //           <span>
-    //             Y
-    //             <Input value={person?.y} onChange={(e) => handleFieldValueChange("personY", e, index)} type="number" />
-    //           </span>
-    //           <span>
-    //             Facing
-    //             <Input value={person?.p} onChange={(e) => handleFieldValueChange("personP", e, index)} type="Text" />
-    //           </span>
-    //           <span>
-    //             Movement
-    //             <Input
-    //               value={person?.movement}
-    //               onChange={(e) => handleFieldValueChange("personM", e, index)}
-    //               type="Text"
-    //             />
-    //           </span>
-    //         </div>
-    //       );
-    //     })}
-
-    //     <Button onClick={() => addNewField("person")} label="Add another person" />
-    //   </div>
-
-    //   <Button onClick={handleSubmit} label="Submit" />
-    //   <Button onClick={handleClear} label="Clear" />
-    // </div>
   );
 };
 
