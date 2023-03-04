@@ -110,25 +110,29 @@ const InputForm = ({ submit, clearData }) => {
           <div>
             <FormLabel data-testid="heading">The Grid layout</FormLabel>
             <div className="section">
-              <InputGroup className="input-group">
-                <InputLeftAddon children="X" />
-                <Input
-                  type="number"
-                  width="60px"
-                  value={gridLayout?.length}
-                  onChange={(e) => handleFieldValueChange("length", e)}
-                />
-              </InputGroup>
+              <FormControl>
+                <InputGroup className="input-group">
+                  <InputLeftAddon children="X" />
+                  <Input
+                    type="number"
+                    width="60px"
+                    value={gridLayout?.length}
+                    onChange={(e) => handleFieldValueChange("length", e)}
+                  />
+                </InputGroup>
+              </FormControl>
 
-              <InputGroup className="input-group">
-                <InputLeftAddon children="Y" />
-                <Input
-                  type="number"
-                  width="60px"
-                  value={gridLayout?.breadth}
-                  onChange={(e) => handleFieldValueChange("breadth", e)}
-                />
-              </InputGroup>
+              <FormControl>
+                <InputGroup className="input-group">
+                  <InputLeftAddon children="Y" />
+                  <Input
+                    type="number"
+                    width="60px"
+                    value={gridLayout?.breadth}
+                    onChange={(e) => handleFieldValueChange("breadth", e)}
+                  />
+                </InputGroup>
+              </FormControl>
             </div>
           </div>
 
@@ -140,25 +144,29 @@ const InputForm = ({ submit, clearData }) => {
               {infectedCells?.map((cell, index) => {
                 return (
                   <div key={index} data-testid={`infected-cell-${index + 1}`} className="section">
-                    <InputGroup className="input-group">
-                      <InputLeftAddon children="X" />
-                      <Input
-                        type="number"
-                        width="60px"
-                        value={cell?.x}
-                        onChange={(e) => handleFieldValueChange("cellX", e, index)}
-                      />
-                    </InputGroup>
+                    <FormControl>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="X" />
+                        <Input
+                          type="number"
+                          width="60px"
+                          value={cell?.x}
+                          onChange={(e) => handleFieldValueChange("cellX", e, index)}
+                        />
+                      </InputGroup>
+                    </FormControl>
 
-                    <InputGroup className="input-group">
-                      <InputLeftAddon children="Y" />
-                      <Input
-                        type="number"
-                        width="60px"
-                        value={cell?.y}
-                        onChange={(e) => handleFieldValueChange("cellY", e, index)}
-                      />
-                    </InputGroup>
+                    <FormControl>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="Y" />
+                        <Input
+                          type="number"
+                          width="60px"
+                          value={cell?.y}
+                          onChange={(e) => handleFieldValueChange("cellY", e, index)}
+                        />
+                      </InputGroup>
+                    </FormControl>
                   </div>
                 );
               })}
@@ -176,44 +184,54 @@ const InputForm = ({ submit, clearData }) => {
                 return (
                   <div className="person-container" data-testid={`person-${index + 1}`} key={index}>
                     <div className="input-layout">
-                      <InputGroup className="input-group">
-                        <InputLeftAddon children="X" />
-                        <Input
-                          type="number"
-                          width="60px"
-                          value={person?.x}
-                          onChange={(e) => handleFieldValueChange("personX", e, index)}
-                        />
-                      </InputGroup>
-                      <InputGroup className="input-group">
-                        <InputLeftAddon children="Y" />
-                        <Input
-                          type="number"
-                          width="60px"
-                          value={person?.y}
-                          onChange={(e) => handleFieldValueChange("personY", e, index)}
-                        />
-                      </InputGroup>
-                      <InputGroup className="input-group">
-                        <InputLeftAddon children="Facing" />
-                        <Input
-                          type="text"
-                          width="60px"
-                          value={person?.p}
-                          onChange={(e) => handleFieldValueChange("personP", e, index)}
-                        />
-                      </InputGroup>
+                      <FormControl>
+                        <InputGroup className="input-group">
+                          <InputLeftAddon children="X" />
+                          <Input
+                            type="number"
+                            width="60px"
+                            value={person?.x}
+                            onChange={(e) => handleFieldValueChange("personX", e, index)}
+                          />
+                        </InputGroup>
+                      </FormControl>
+
+                      <FormControl>
+                        <InputGroup className="input-group">
+                          <InputLeftAddon children="Y" />
+                          <Input
+                            type="number"
+                            width="60px"
+                            value={person?.y}
+                            onChange={(e) => handleFieldValueChange("personY", e, index)}
+                          />
+                        </InputGroup>
+                      </FormControl>
+
+                      <FormControl>
+                        <InputGroup className="input-group">
+                          <InputLeftAddon children="Facing" />
+                          <Input
+                            type="text"
+                            width="60px"
+                            value={person?.p}
+                            onChange={(e) => handleFieldValueChange("personP", e, index)}
+                          />
+                        </InputGroup>
+                      </FormControl>
                     </div>
 
-                    <InputGroup className="input-group">
-                      <InputLeftAddon children="Movement" />
-                      <Input
-                        type="text"
-                        width="280px"
-                        value={person?.movement}
-                        onChange={(e) => handleFieldValueChange("personM", e, index)}
-                      />
-                    </InputGroup>
+                    <FormControl>
+                      <InputGroup className="input-group">
+                        <InputLeftAddon children="Movement" />
+                        <Input
+                          type="text"
+                          width="280px"
+                          value={person?.movement}
+                          onChange={(e) => handleFieldValueChange("personM", e, index)}
+                        />
+                      </InputGroup>
+                    </FormControl>
                   </div>
                 );
               })}
