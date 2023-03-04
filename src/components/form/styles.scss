@@ -34,5 +34,10 @@
   display: flex;
 }
 
-// .infected-cell {
-// }
+.button-group {
+  margin: 25px;
+
+  button {
+    margin: 0 15px;
+  }
+}

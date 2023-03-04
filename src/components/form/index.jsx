@@ -125,7 +125,7 @@ const InputForm = ({ submit, clearData }) => {
                 <Input
                   type="number"
                   width="60px"
-                  value={gridLayout?.length}
+                  value={gridLayout?.breadth}
                   onChange={(e) => handleFieldValueChange("breadth", e)}
                 />
               </InputGroup>
@@ -146,7 +146,7 @@ const InputForm = ({ submit, clearData }) => {
                         type="number"
                         width="60px"
                         value={cell?.x}
-                        onChange={(e) => handleFieldValueChange("cellX", e)}
+                        onChange={(e) => handleFieldValueChange("cellX", e, index)}
                       />
                     </InputGroup>
 
@@ -156,7 +156,7 @@ const InputForm = ({ submit, clearData }) => {
                         type="number"
                         width="60px"
                         value={cell?.y}
-                        onChange={(e) => handleFieldValueChange("cellY", e)}
+                        onChange={(e) => handleFieldValueChange("cellY", e, index)}
                       />
                     </InputGroup>
                   </div>
@@ -181,8 +181,8 @@ const InputForm = ({ submit, clearData }) => {
                         <Input
                           type="number"
                           width="60px"
-                          value={person?.y}
-                          onChange={(e) => handleFieldValueChange("personX", e)}
+                          value={person?.x}
+                          onChange={(e) => handleFieldValueChange("personX", e, index)}
                         />
                       </InputGroup>
                       <InputGroup className="input-group">
@@ -191,16 +191,16 @@ const InputForm = ({ submit, clearData }) => {
                           type="number"
                           width="60px"
                           value={person?.y}
-                          onChange={(e) => handleFieldValueChange("personY", e)}
+                          onChange={(e) => handleFieldValueChange("personY", e, index)}
                         />
                       </InputGroup>
                       <InputGroup className="input-group">
                         <InputLeftAddon children="Facing" />
                         <Input
-                          type="number"
+                          type="text"
                           width="60px"
                           value={person?.p}
-                          onChange={(e) => handleFieldValueChange("PersonP", e)}
+                          onChange={(e) => handleFieldValueChange("personP", e, index)}
                         />
                       </InputGroup>
                     </div>
@@ -208,10 +208,10 @@ const InputForm = ({ submit, clearData }) => {
                     <InputGroup className="input-group">
                       <InputLeftAddon children="Movement" />
                       <Input
-                        type="number"
+                        type="text"
                         width="280px"
                         value={person?.movement}
-                        onChange={(e) => handleFieldValueChange("PersonM", e)}
+                        onChange={(e) => handleFieldValueChange("personM", e, index)}
                       />
                     </InputGroup>
                   </div>
@@ -220,6 +220,13 @@ const InputForm = ({ submit, clearData }) => {
             </div>
             <Button onClick={() => addNewField("person")}>Add new person</Button>
           </div>
+        </div>
+
+        <div className="button-group">
+          <Button onClick={() => handleSubmit()}>Submit</Button>
+          <Button onClick={() => handleClear()} variant="outline">
+            Clear
+          </Button>
         </div>
       </FormControl>
     </div>

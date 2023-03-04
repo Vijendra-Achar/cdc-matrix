@@ -50,8 +50,8 @@ const Gird = ({ data }) => {
   };
 
   return (
-    <div>
-      <h3>The Result</h3>
+    <div className="grid-container">
+      <h3 className="grid-header">The Result</h3>
       {matrix?.length
         ? matrix?.map((row, i) => {
             return (
